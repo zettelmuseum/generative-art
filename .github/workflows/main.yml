@@ -9,7 +9,7 @@ jobs:
       - name: remove .git
         run: |
           rm -rf ./.git
-          find . -name '*.bmp' -delete
+          find . -name '*.jpg' -delete
           find . -name '*.png' -delete
           find . -name '*.zip' -delete
           7z a -t7z -mx9 my-artifact.7z ./
