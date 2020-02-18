@@ -11,19 +11,22 @@ jobs:
           rm -rf ./.git
           find . -name "*.jpg" -delete
           find . -name "*.png" -delete
-          find . -name "*.zip" -delete
+          find . -name "*.7z" -delete
           7z a -t7z -mx9 my-artifact.7z ./
+      - name: "Determine tag"
+        id: "determine-tag"
+        run: "echo \"::set-output name=tag::${GITHUB_REF#refs/tags/}\""
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
           allowUpdates: true
+          release_name: "${{ steps.determine-tag.outputs.tag }}"
+          tag_name: "${{ steps.determine-tag.outputs.tag }}"
       
       - name: Upload Release Asset
         id: upload-release-asset 
